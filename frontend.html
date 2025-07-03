@@ -101,7 +101,7 @@
           const userMsg = { sender: "user", text: input };
           setMessages((prev) => [...prev, userMsg]);
 
-          const lambdaUrl = "https://your-api-gateway-url.amazonaws.com/dev/chatbot"; // <-- replace with your actual URL
+          const lambdaUrl = "https://0bmsoxdm1g.execute-api.us-east-2.amazonaws.com/default/GuitarChatbot";
 
           try {
             const res = await fetch(lambdaUrl, {
