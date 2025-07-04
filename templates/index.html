@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Practice Reminder</title>
+  <link href="https://fonts.googleapis.com/css2?family=Concert+One&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+      margin: 0;
+      background-color: #1e1e1e;
+      color: white;
+      font-family: Arial, sans-serif;
+    }
+    .container {
+      display: flex;
+      align-items: center;
+      padding: 30px;
+    }
+    .icon {
+      font-size: 30px;
+      margin-right: 20px;
+    }
+    .text-content {
+      flex-grow: 1;
+    }
+    .title {
+      font-weight: bold;
+      font-size: 18px;
+      margin-bottom: 4px;
+    }
+    .subtitle {
+      color: gray;
+      font-size: 13px;
+    }
+    .enable-btn {
+      background-color: #8b5cf6;
+      color: white;
+      border: none;
+      padding: 10px 16px;
+      font-size: 14px;
+      cursor: pointer;
+      border-radius: 6px;
+    }
+    .enable-btn:hover {
+      background-color: #7c3aed;
+    }
+
+    .motivation {
+      margin-top: 6px;
+      font-size: 12px;
+      color: #a78bfa;
+      max-width: 400px;
+      line-height: 1.4;
+      animation: fadeIn 1.5s ease-in;
+      font-family: 'Concert One', cursive;
+    }
+
+    .guitar-img {
+  height: 40px;         /* You can adjust this to 35px or 30px if it's still too big */
+  width: auto;
+  border-radius: 6px;
+  animation: shake 1.8s ease-in-out infinite;
+    }
+
+
+    @keyframes shake {
+      0% { transform: rotate(0); }
+      25% { transform: rotate(8deg); }
+      50% { transform: rotate(-8deg); }
+      75% { transform: rotate(8deg); }
+      100% { transform: rotate(0); }
+    }
+
+  .icon {
+    font-size: 30px;
+    margin-right: 20px;
+    animation: shake 1.8s ease-in-out infinite;
+    transform-origin: center;
+    }
+
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <div class="icon">
+      <img src="{{ url_for('static', filename='images/guitar-boy.png') }}" alt="Boy playing guitar" class="guitar-img">
+  </div>
+
+
+    <div class="text-content">
+      <div class="title">🎸 Your Guitar Is Missing You</div>
+      <div class="subtitle">Because future you will thank you</div>
+      <div class="motivation">You might not feel like practicing guitar right now, but if you do, the version of you tomorrow, next week, or a year from now will be soooo glad you did.</div>
+
+
+    </div>
+    <button class="enable-btn">Enable</button>
+  </div>
+</body>
+</html>
