@@ -50,3 +50,84 @@ def lambda_handler(event, context):
             "reply": reply
         })
     }
+
+
+
+
+import json
+import boto3
+import base64
+import uuid
+import os
+
+s3 = boto3.client('s3')
+BUCKET_NAME = os.environ.get("BUCKET_NAME", "my-default-bucket-name")
+
+def lambda_handler(event, context):
+    """
+    Lambda function to upload an image to S3.
+
+    Expects a POST request with JSON body:
+    {
+        "image": "base64 string of the image",
+        "userId": "someId"
+    }
+
+    Returns:
+    {
+        "message": "Image uploaded successfully",
+        "imageUrl": "https://your-bucket-name.s3.amazonaws.com/..."
+    }
+    """
+
+    # Try to parse and validate input
+    try:
+        body = json.loads(event['body'])
+        image_data = body.get("image", "")
+        user_id = body.get("userId", "anonymous")
+
+        if not image_data:
+            raise Exception("No image data found.")
+
+        # Decode base64 image
+        image_bytes = base64.b64decode(image_data)
+
+        # Generate unique filename
+        filename = f"{user_id}/{str(uuid.uuid4())}.jpg"
+
+        # Upload to S3
+        s3.put_object(
+            Bucket=BUCKET_NAME,
+            Key=filename,
+            Body=image_bytes,
+            ContentType="image/jpeg"
+        )
+
+        # Create public URL (assumes public-read or presigned setup)
+        image_url = f"https://{BUCKET_NAME}.s3.amazonaws.com/{filename}"
+
+        # Success response
+        return {
+            "statusCode": 200,
+            "headers": {
+                "Content-Type": "application/json",
+                "Access-Control-Allow-Origin": "*"
+            },
+            "body": json.dumps({
+                "message": "Image uploaded successfully",
+                "imageUrl": image_url
+            })
+        }
+
+    except Exception as e:
+        # Error response
+        return {
+            "statusCode": 400,
+            "headers": {
+                "Content-Type": "application/json",
+                "Access-Control-Allow-Origin": "*"
+            },
+            "body": json.dumps({
+                "error": str(e)
+            })
+        }
