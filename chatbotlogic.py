@@ -54,13 +54,7 @@ def lambda_handler(event, context):
 
 
 
-import json
-import base64
-import uuid
-import os
 
-s3 = boto3.client('s3')
-BUCKET_NAME = os.environ.get("BUCKET_NAME", "my-default-bucket-name")
 
 def lambda_handler(event, context):
     """
