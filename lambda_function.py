@@ -72,7 +72,7 @@ def lambda_handler(event, context):
     Returns:
     {
         "message": "Image uploaded successfully",
-        "imageUrl": "https://your-bucket-name.s3.amazonaws.com/..."
+        "imageUrl": "https://chords.s3.amazonaws.com/..."
     }
     """
 
@@ -93,14 +93,14 @@ def lambda_handler(event, context):
 
         # Upload to S3
         s3.put_object(
-            Bucket=BUCKET_NAME,
+            Bucket=chords,
             Key=filename,
             Body=image_bytes,
             ContentType="image/jpeg"
         )
 
         # Create public URL (assumes public-read or presigned setup)
-        image_url = f"https://{BUCKET_NAME}.s3.amazonaws.com/{filename}"
+        image_url = f"https://{chords}.s3.amazonaws.com/{filename}"
 
         # Success response
         return {
