@@ -53,11 +53,7 @@ def lambda_handler(event, context):
 
 
 
-
-import json
-import base64
-import uuid
-import boto3
+import json    
 
 
 def lambda_handler(event, context):
