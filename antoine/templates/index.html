@@ -57,10 +57,10 @@
     }
 
     .guitar-img {
-  height: 40px;         /* You can adjust this to 35px or 30px if it's still too big */
-  width: auto;
-  border-radius: 6px;
-  animation: shake 1.8s ease-in-out infinite;
+      height: 40px;         /* You can adjust this to 35px or 30px if it's still too big */
+      width: auto;
+      border-radius: 6px;
+      animation: shake 1.8s ease-in-out infinite;
     }
 
 
@@ -97,11 +97,13 @@
     <div class="text-content">
       <div class="title">🎸 Your Guitar Is Missing You</div>
       <div class="subtitle">Because future you will thank you</div>
-      <div class="motivation">You might not feel like practicing guitar right now, but if you do, the version of you tomorrow, next week, or a year from now will be soooo glad you did.</div>
+      <div class="motivation">
+        You might not feel like practicing guitar right now, but if you do, the version of you tomorrow, next week, or a year from now will be soooo glad you did.
+      </div>
 
+  <form action="/send-reminder" method="post">
+    <button type="submit" class="enable-btn">Enable</button>
+  </form>
 
-    </div>
-    <button class="enable-btn">Enable</button>
-  </div>
 </body>
 </html>
