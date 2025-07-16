@@ -4,135 +4,200 @@
 <meta charset="UTF-8">
 <title>Guitar Learning App - UI</title>
 <style>
-    body {
-      font-family: 'Segoe UI', sans-serif;
-      background-color: #121212;
-      color: white;
-      padding: 30px;
-    }
-    h1, h2 {
-      color: #ffffff;
-    }
-    .module {
-      background: #1f1f1f;
-      border-radius: 10px;
-      padding: 20px;
-      margin-bottom: 25px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.3);
-    }
-    button, select, input {
-      padding: 10px;
-      font-size: 16px;
-      border: none;
-      border-radius: 6px;
-      margin-top: 10px;
-    }
-    button {
-      background-color: #9b5de5;
-      color: white;
-      cursor: pointer;
-    }
-    .output {
-      margin-top: 15px;
-      font-weight: bold;
-      color: #00ffae;
-    }
+  body {
+    font-family: 'Segoe UI', sans-serif;
+    background-color: #121212;
+    color: white;
+    padding: 30px;
+  }
+  h1, h2 {
+    color: #ffffff;
+  }
+  .module {
+    background: #1f1f1f;
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 25px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.3);
+  }
+  button, select, input[type="text"] {
+    padding: 10px;
+    font-size: 16px;
+    border: none;
+    border-radius: 6px;
+    margin-top: 10px;
+    margin-right: 10px;
+  }
+  input[type="file"] {
+    margin-top: 10px;
+    margin-right: 10px;
+    color: white;
+  }
+  button {
+    background-color: #9b5de5;
+    color: white;
+    cursor: pointer;
+  }
+  ul {
+    list-style: none;
+    padding-left: 0;
+  }
+  li {
+    margin-bottom: 8px;
+  }
+  a {
+    color: #00ffae;
+    text-decoration: none;
+  }
+  a:hover {
+    text-decoration: underline;
+  }
+  .output {
+    margin-top: 15px;
+    font-weight: bold;
+    color: #00ffae;
+  }
 </style>
 </head>
 <body>
- 
-  <h1>🎸 Guitar Learning App Demo</h1>
- 
-  <div class="module">
-<h2>🤖 Chatbot</h2>
-<input type="text" id="chatInput" placeholder="Ask a guitar question..." />
-<button id="chatSendBtn">Send</button>
-<div class="output" id="chatResponse"></div>
+
+<h1>🎸 Guitar Learning App Demo</h1>
+
+<div class="module">
+  <h2>🤖 Chatbot</h2>
+  <input type="text" id="chatInput" placeholder="Ask a guitar question..." />
+  <button id="chatSendBtn">Send</button>
+  <div class="output" id="chatResponse"></div>
 </div>
- 
-  <div class="module">
-<h2>🔔 Practice Reminder</h2>
-<button>Enable Reminder</button>
+
+<div class="module">
+  <h2>🔔 Practice Reminder</h2>
+  <button>Enable Reminder</button>
 </div>
- 
-  <div class="module">
-<h2>📸 Upload a Photo</h2>
-<input type="file" />
+
+<div class="module">
+  <h2>📸 Upload a Photo</h2>
+  <input type="file" />
 </div>
- 
-  <div class="module">
-<h2>📄 Advertise with your CV</h2>
-<button>Upload CV</button>
+
+<div class="module">
+  <h2>📄 Available Guitar Teachers</h2>
+  <ul id="teacherList">
+    <li>Alex Johnson - <a href="#">Download CV</a></li>
+    <li>Maria Lopez - <a href="#">Download CV</a></li>
+    <li>James Smith - <a href="#">Download CV</a></li>
+  </ul>
 </div>
- 
-  <div class="module">
-<h2>🎵 Guitar Mood Generator</h2>
-<select id="mood">
-<option value="Happy">Happy</option>
-<option value="Sad">Sad</option>
-<option value="Energetic">Energetic</option>
-<option value="Chill">Chill</option>
-</select>
-<button id="generateBtn">Generate Practice Tips</button>
-<div class="output" id="moodResult"></div>
+
+<div class="module">
+  <h2>📤 Upload Your CV (For Teachers)</h2>
+  <input type="text" id="teacherName" placeholder="Your name" />
+  <input type="file" id="cvFile" />
+  <button id="uploadCvBtn">Upload</button>
+  <div class="output" id="cvUploadStatus"></div>
 </div>
- 
-  <script>
-    // Chatbot button logic
-    document.getElementById("chatSendBtn").addEventListener("click", async () => {
-      const userMessage = document.getElementById("chatInput").value;
-      const responseDiv = document.getElementById("chatResponse");
-      if (!userMessage.trim()) {
-        responseDiv.textContent = "Please enter a question.";
-        return;
+
+<div class="module">
+  <h2>🎵 Guitar Mood Generator</h2>
+  <select id="mood">
+    <option value="Happy">Happy</option>
+    <option value="Sad">Sad</option>
+    <option value="Energetic">Energetic</option>
+    <option value="Chill">Chill</option>
+  </select>
+  <button id="generateBtn">Generate Practice Tips</button>
+  <div class="output" id="moodResult"></div>
+</div>
+
+<script>
+  // Chatbot button logic
+  document.getElementById("chatSendBtn").addEventListener("click", async () => {
+    const userMessage = document.getElementById("chatInput").value;
+    const responseDiv = document.getElementById("chatResponse");
+    if (!userMessage.trim()) {
+      responseDiv.textContent = "Please enter a question.";
+      return;
+    }
+    responseDiv.textContent = "Loading...";
+    try {
+      const response = await fetch("https://wp7db7cjci.execute-api.us-east-2.amazonaws.com/default/ChatbotLogic", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ message: userMessage, userId: "webUser123" })
+      });
+      const data = await response.json();
+      responseDiv.textContent = data.reply || "No response from chatbot.";
+    } catch (error) {
+      console.error("Error:", error);
+      responseDiv.textContent = "Something went wrong.";
+    }
+  });
+
+  // Mood generator logic
+  document.getElementById("generateBtn").addEventListener("click", async () => {
+    const mood = document.getElementById("mood").value;
+    try {
+      const response = await fetch("https://dl1pjlglyd.execute-api.us-east-2.amazonaws.com/test/mood_generator", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ mood })
+      });
+      const data = await response.json();
+      if (data.exercises) {
+        document.getElementById("moodResult").textContent = 
+          `Try: ${data.exercises[0]} and ${data.exercises[1]}`;
+      } else {
+        document.getElementById("moodResult").textContent = "No suggestions returned.";
       }
- 
-      responseDiv.textContent = "Loading...";
- 
-      try {
-        const response = await fetch("https://wp7db7cjci.execute-api.us-east-2.amazonaws.com/default/ChatbotLogic", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({ message: userMessage, userId: "webUser123" })
-        });
- 
-        const data = await response.json();
-        responseDiv.textContent = data.reply || "No response from chatbot.";
-      } catch (error) {
-        console.error("Error:", error);
-        responseDiv.textContent = "Something went wrong.";
+    } catch (error) {
+      console.error("Error:", error);
+      document.getElementById("moodResult").textContent = "Something went wrong.";
+    }
+  });
+
+  // CV upload logic
+  document.getElementById("uploadCvBtn").addEventListener("click", async () => {
+    const name = document.getElementById("teacherName").value.trim();
+    const fileInput = document.getElementById("cvFile");
+    const statusDiv = document.getElementById("cvUploadStatus");
+
+    if (!name || fileInput.files.length === 0) {
+      statusDiv.textContent = "Please enter your name and select a CV file.";
+      return;
+    }
+
+    const file = fileInput.files[0];
+    const formData = new FormData();
+    formData.append("name", name);
+    formData.append("cv", file);
+
+    statusDiv.textContent = "Uploading...";
+
+    try {
+      const response = await fetch("YOUR_BACKEND_UPLOAD_ENDPOINT", {
+        method: "POST",
+        body: formData
+      });
+
+      const result = await response.json();
+
+      if (response.ok && result.cvUrl) {
+        statusDiv.textContent = "CV uploaded successfully!";
+
+        // Add new teacher to the list
+        const teacherList = document.getElementById("teacherList");
+        const li = document.createElement("li");
+        li.innerHTML = `${name} - <a href="${result.cvUrl}" target="_blank">Download CV</a>`;
+        teacherList.appendChild(li);
+      } else {
+        statusDiv.textContent = result.message || "Upload failed.";
       }
-    });
- 
-    // Mood generator logic
-    document.getElementById("generateBtn").addEventListener("click", async () => {
-      const mood = document.getElementById("mood").value;
- 
-      try {
-        const response = await fetch("https://dl1pjlglyd.execute-api.us-east-2.amazonaws.com/test/mood_generator", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({ mood })
-        });
- 
-        const data = await response.json();
- 
-        if (data.exercises) {
-          document.getElementById("moodResult").textContent = 
-            `Try: ${data.exercises[0]} and ${data.exercises[1]}`;
-        } else {
-          document.getElementById("moodResult").textContent = "No suggestions returned.";
-        }
-      } catch (error) {
-        console.error("Error:", error);
-        document.getElementById("moodResult").textContent = "Something went wrong.";
-      }
-    });
+    } catch (error) {
+      console.error(error);
+      statusDiv.textContent = "An error occurred during upload.";
+    }
+  });
 </script>
- 
+
 </body>
 </html>
