@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 import requests  # Needed to send requests to AWS API
 from s3_helpers import get_subscribers, save_subscribers
 
