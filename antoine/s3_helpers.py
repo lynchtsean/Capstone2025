@@ -18,3 +18,12 @@ def get_subscribers():
     except ClientError as e:
         print(f"Error fetching subscribers.json: {e}")
         return {}
+    
+    def save_subscribers(subscribers):
+    try:
+        json_data = json.dumps(subscribers)
+        s3.put_object(Bucket=BUCKET_NAME, Key=FILE_KEY, Body=json_data)
+        print("subscribers.json updated successfully in S3.")
+    except ClientError as e:
+        print(f"Error uploading subscribers.json: {e}")
+
