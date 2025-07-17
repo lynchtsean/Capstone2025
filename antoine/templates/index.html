@@ -102,6 +102,12 @@
         You might not feel like practicing guitar right now, but if you do, the version of you tomorrow, next week, or a year from now will be soooo glad you did.
       </div>
 
+  <form method="POST" action="/subscribe">
+    <input type="email" name="email" placeholder="Your email" required style="margin-top: 12px; padding: 8px; border-radius: 6px; border: none;">
+    <input type="tel" name="phone" placeholder="Your phone number" required style="margin-top: 8px; padding: 8px; border-radius: 6px; border: none;">
+    <button type="submit" class="enable-btn">Subscribe</button>
+  </form>
+
   <form action="/send-reminder" method="post">
     <button type="submit" class="enable-btn">Enable</button>
   </form>
