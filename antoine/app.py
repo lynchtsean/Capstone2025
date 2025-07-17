@@ -1,5 +1,6 @@
 from flask import Flask, render_template
 import requests  # Needed to send requests to AWS API
+from s3_helpers import get_subscribers, save_subscribers
 
 app = Flask(__name__)
 
@@ -21,6 +22,26 @@ def send_reminder():
 
     # 🔁 Reloads the homepage and optionally shows feedback
     return render_template("index.html", message=message)
+
+# 📥 Subscribe route that saves user info to S3
+@app.route("/subscribe", methods=["POST"])
+def subscribe():
+    email = request.form.get("email")
+    phone = request.form.get("phone")
+
+    # Fetch current subscribers from S3
+    subscribers = get_subscribers()
+
+    # Update or add the new subscriber
+    subscribers[email] = {
+        "phone": phone,
+        "enabled": True
+    }
+
+    # Save updated subscribers back to S3
+    save_subscribers(subscribers)
+
+    return render_template("success.html", email=email)
 
 # 🧪 Run the app locally
 if __name__ == "__main__":
