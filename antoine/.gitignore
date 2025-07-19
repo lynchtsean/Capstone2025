@@ -1,0 +1,8 @@
+# Lambda build artifact
+lambda.zip
+
+# Python cache
+__pycache__/
+
+# macOS cruft
+.DS_Store
