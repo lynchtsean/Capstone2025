@@ -1,9 +1,8 @@
-name: Deploy Flask to Render
+name: CI
 
 on:
   push:
-    branches:
-      - main
+    branches: [ main ]
 
 jobs:
   deploy:
@@ -11,16 +10,17 @@ jobs:
     defaults:
       run:
         working-directory: antoine
+    env:
+      SERVICE_ID: srv-d1tpb7je5dus73drg49g   # ← your real Service ID
 
     steps:
       - name: Checkout repo
         uses: actions/checkout@v3
 
-      - name: Deploy to Render
-        uses: rendercommunity/action-deploy@v1
-        with:
-          api-key: ${{ secrets.RENDER_API_KEY }}
-          service-id: srv-d1tpb7je5dus73drg49g
-
-
-
+      - name: Trigger Render deploy via API
+        run: |
+          echo "🔄 Triggering deploy for service $SERVICE_ID"
+          curl -X POST "https://api.render.com/v1/services/${SERVICE_ID}/deploys" \
+            -H "Authorization: Bearer ${{ secrets.RENDER_API_KEY }}" \
+            -H "Content-Type: application/json" \
+            --fail --silent --show-error
