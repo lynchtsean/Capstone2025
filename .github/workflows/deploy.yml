@@ -1,0 +1,22 @@
+name: Deploy Flask to Render
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: antoine
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Deploy to Render
+        uses: render-examples/deploy-action@v1
+        with:
+          api-key: ${{ secrets.RENDER_API_KEY }}
