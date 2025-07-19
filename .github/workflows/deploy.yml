@@ -17,10 +17,12 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v3
 
-      - name: Trigger Render deploy via API
+      - name: Trigger Render Deploy (debug)
         run: |
-          echo "🔄 Triggering deploy for service $SERVICE_ID"
-          curl -X POST "https://api.render.com/v1/services/${SERVICE_ID}/deploys" \
+          echo "🔑 API key length: ${#RENDER_API_KEY}"
+          echo "📘 Service ID: $SERVICE_ID"
+          echo "🗺️ POST https://api.render.com/v1/services/${SERVICE_ID}/deploys"
+          curl -v -X POST "https://api.render.com/v1/services/${SERVICE_ID}/deploys" \
             -H "Authorization: Bearer ${{ secrets.RENDER_API_KEY }}" \
-            -H "Content-Type: application/json" \
-            --fail --silent --show-error
+            -H "Content-Type: application/json"
+
