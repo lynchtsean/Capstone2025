@@ -1,0 +1,87 @@
+
+Terraform used the selected providers to generate the following execution
+plan. Resource actions are indicated with the following symbols:
+  + create
+
+Terraform will perform the following actions:
+
+  # aws_iam_role.lambda_exec will be created
+  + resource "aws_iam_role" "lambda_exec" {
+      + arn                   = (known after apply)
+      + assume_role_policy    = jsonencode(
+            {
+              + Statement = [
+                  + {
+                      + Action    = "sts:AssumeRole"
+                      + Effect    = "Allow"
+                      + Principal = {
+                          + Service = "lambda.amazonaws.com"
+                        }
+                      + Sid       = ""
+                    },
+                ]
+              + Version   = "2012-10-17"
+            }
+        )
+      + create_date           = (known after apply)
+      + force_detach_policies = false
+      + id                    = (known after apply)
+      + managed_policy_arns   = (known after apply)
+      + max_session_duration  = 3600
+      + name                  = "lambda_execution_role"
+      + name_prefix           = (known after apply)
+      + path                  = "/"
+      + tags_all              = (known after apply)
+      + unique_id             = (known after apply)
+
+      + inline_policy (known after apply)
+    }
+
+  # aws_lambda_function.reminder_lambda will be created
+  + resource "aws_lambda_function" "reminder_lambda" {
+      + architectures                  = (known after apply)
+      + arn                            = (known after apply)
+      + code_sha256                    = (known after apply)
+      + filename                       = "lambda.zip"
+      + function_name                  = "ReminderLambda"
+      + handler                        = "lambda_function.lambda_handler"
+      + id                             = (known after apply)
+      + invoke_arn                     = (known after apply)
+      + last_modified                  = (known after apply)
+      + memory_size                    = 128
+      + package_type                   = "Zip"
+      + publish                        = false
+      + qualified_arn                  = (known after apply)
+      + qualified_invoke_arn           = (known after apply)
+      + region                         = "us-east-1"
+      + reserved_concurrent_executions = -1
+      + role                           = (known after apply)
+      + runtime                        = "python3.9"
+      + signing_job_arn                = (known after apply)
+      + signing_profile_version_arn    = (known after apply)
+      + skip_destroy                   = false
+      + source_code_hash               = "RWTRNWgaQ7fK6A6B9Gjlm9+lo02Sx0hWlwlv4V8Bnbw="
+      + source_code_size               = (known after apply)
+      + tags_all                       = (known after apply)
+      + timeout                        = 3
+      + version                        = (known after apply)
+
+      + ephemeral_storage (known after apply)
+
+      + logging_config (known after apply)
+
+      + tracing_config (known after apply)
+    }
+
+  # aws_lambda_permission.allow_invoke will be created
+  + resource "aws_lambda_permission" "allow_invoke" {
+      + action              = "lambda:InvokeFunction"
+      + function_name       = "ReminderLambda"
+      + id                  = (known after apply)
+      + principal           = "apigateway.amazonaws.com"
+      + region              = "us-east-1"
+      + statement_id        = "AllowExecutionFromTrigger"
+      + statement_id_prefix = (known after apply)
+    }
+
+Plan: 3 to add, 0 to change, 0 to destroy.
