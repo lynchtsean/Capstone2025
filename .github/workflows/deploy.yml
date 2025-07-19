@@ -20,3 +20,7 @@ jobs:
         uses: rendercommunity/action-deploy@v1
         with:
           api-key: ${{ secrets.RENDER_API_KEY }}
+          service-id: srv-d1tpb7je5dus73drg49g
+
+
+
