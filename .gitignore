@@ -1,1 +1,3 @@
 .terraform/
+antoine/.terraform.lock.hcl
+antoine/tfplan
