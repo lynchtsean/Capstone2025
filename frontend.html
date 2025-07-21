@@ -3,58 +3,85 @@
 <head>
 <meta charset="UTF-8">
 <title>Guitar Learning App - UI</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
 <style>
   body {
-    font-family: 'Segoe UI', sans-serif;
-    background-color: #121212;
-    color: white;
+    font-family: 'Poppins', sans-serif;
+    background-color: #181818;
+    color: #f0f0f0;
     padding: 30px;
+    max-width: 800px;
+    margin: auto;
   }
+
   h1, h2 {
     color: #ffffff;
+    margin-bottom: 15px;
   }
+
   .module {
-    background: #1f1f1f;
-    border-radius: 10px;
-    padding: 20px;
-    margin-bottom: 25px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.3);
+    background: #242424;
+    border-radius: 12px;
+    padding: 25px;
+    margin-bottom: 30px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+    transition: box-shadow 0.3s ease;
   }
+
+  .module:hover {
+    box-shadow: 0 6px 25px rgba(0,0,0,0.6);
+  }
+
   button, select, input[type="text"] {
-    padding: 10px;
+    padding: 12px 16px;
     font-size: 16px;
     border: none;
-    border-radius: 6px;
+    border-radius: 12px;
     margin-top: 10px;
     margin-right: 10px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
   }
+
   input[type="file"] {
     margin-top: 10px;
     margin-right: 10px;
     color: white;
   }
+
   button {
-    background-color: #9b5de5;
+    background: linear-gradient(90deg, #9b5de5, #6a4c93);
     color: white;
     cursor: pointer;
   }
+
+  button:hover {
+    background: linear-gradient(90deg, #6a4c93, #9b5de5);
+    transform: translateY(-2px);
+  }
+
   ul {
     list-style: none;
     padding-left: 0;
   }
+
   li {
-    margin-bottom: 8px;
+    margin-bottom: 10px;
   }
+
   a {
     color: #00ffae;
     text-decoration: none;
+    transition: color 0.3s ease;
   }
+
   a:hover {
     text-decoration: underline;
+    color: #66ffc2;
   }
+
   .output {
     margin-top: 15px;
-    font-weight: bold;
+    font-weight: 500;
     color: #00ffae;
   }
 </style>
@@ -110,7 +137,7 @@
 </div>
 
 <script>
-  // Chatbot button logic
+  // Chatbot logic
   document.getElementById("chatSendBtn").addEventListener("click", async () => {
     const userMessage = document.getElementById("chatInput").value;
     const responseDiv = document.getElementById("chatResponse");
