@@ -4,7 +4,7 @@ This repository contains the Terraform configuration for my guitar chatbot proje
 
 ## 🚀 Architecture
 
-![Architecture Diagram](./architecture-diagram.png)
+![Architecture Diagram](guitar-chatbot-terraform/architecture-diagram.png)
 
 ## 💬 Deployment
 
