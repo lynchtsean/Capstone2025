@@ -1,22 +1,11 @@
-+-------------------+
-|   User's Browser  |
-|  (Frontend UI)    |
-+--------+----------+
-         |
-         v
-+--------+----------+
-|   API Gateway     |
-| (HTTPS Endpoint)  |
-+--------+----------+
-         |
-         v
-+--------+----------+
-|    AWS Lambda     |
-| (Chatbot Logic)   |
-+--------+----------+
-         |
-         v
-+-------------------+
-|  Terraform Config |
-| (Manages Infra)   |
-+-------------------+
+[User Browser] 
+     ↓ 
+[Frontend Web App (HTML + JS)]
+     ↓ fetch()
+[API Gateway]
+     ↓ triggers
+[AWS Lambda: chatbot_logic.py]
+     ↓ response
+[API Gateway]
+     ↓ returns
+[Frontend Web App → UI Update]
