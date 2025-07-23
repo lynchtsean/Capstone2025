@@ -1,56 +1,57 @@
-import json
-
-def detect_intent(message):
+def generate_response(message):
+    """
+    Generates a response to the user's guitar-related message.
+    You can expand this with more logic, database calls, or ML models.
+    """
     message = message.lower()
-    if "chord" in message or "scale" in message:
-        return "chord"
-    elif "practice" in message or "tip" in message:
-        return "practice"
-    elif "song" in message or "recommend" in message:
-        return "song"
-    elif "challenge" in message:
-        return "challenge"
-    else:
-        return "general"
 
-def generate_response(message, user_id="user"):
-    intent = detect_intent(message)
-
-    if intent == "chord":
-        return f"🎵 Hey {user_id}, which chord would you like to learn? G major, D minor, or C major?"
-    elif intent == "practice":
-        return f"💪 Practice tip for you, {user_id}: Start slow and use a metronome. Accuracy beats speed!"
-    elif intent == "song":
-        return f"🎶 {user_id}, try playing 'Wonderwall' by Oasis or 'Wish You Were Here' by Pink Floyd — great beginner songs!"
-    elif intent == "challenge":
-        return f"🔥 Challenge for you, {user_id}: Try playing the minor pentatonic scale in all positions this week!"
+    if "chord" in message:
+        return "Sure! A basic G chord looks like this: G - B - D."
+    elif "tune" in message or "tuning" in message:
+        return "Standard guitar tuning from lowest to highest string is: E A D G B E."
+    elif "practice" in message:
+        return "Practice 20 minutes daily. Start with scales and transition into chord changes."
+    elif "strumming" in message:
+        return "Try down-down-up-up-down-up as a beginner strumming pattern."
+    elif "scale" in message:
+        return "The pentatonic scale is a great place to start: A - C - D - E - G."
+    elif "french" in message or "français" in message:
+        return "Désolé, la version française arrive bientôt! 🎸"
     else:
-        return f"🤖 Hi {user_id}! I can help with chords, song suggestions, or practice tips. What would you like help with?"
+        return "I'm here to help with chords, tuning, practice tips, and more. Ask away!"
 
 def lambda_handler(event, context):
+    """
+    AWS Lambda handler function triggered via API Gateway.
+    Expects JSON input with 'message' and optional 'userId'.
+    """
     try:
         body = json.loads(event.get("body", "{}"))
-        message = body.get("message", "")
-        user_id = body.get("userId", "guitarist")
+        user_message = body.get("message", "")
 
-        if not message:
+        if not user_message:
             return {
                 "statusCode": 400,
-                "headers": { "Content-Type": "application/json", "Access-Control-Allow-Origin": "*" },
-                "body": json.dumps({"reply": "Please provide a message!"})
+                "body": json.dumps({"error": "Missing 'message' in request body."})
             }
 
-        reply_text = generate_response(message, user_id)
+        reply = generate_response(user_message)
 
         return {
             "statusCode": 200,
-            "headers": { "Content-Type": "application/json", "Access-Control-Allow-Origin": "*" },
-            "body": json.dumps({"reply": reply_text})
+            "headers": {
+                "Content-Type": "application/json",
+                "Access-Control-Allow-Origin": "*",  # CORS support
+            },
+            "body": json.dumps({"reply": reply})
         }
 
     except Exception as e:
         return {
             "statusCode": 500,
-            "headers": { "Content-Type": "application/json", "Access-Control-Allow-Origin": "*" },
-            "body": json.dumps({"reply": f"Error: {str(e)}"})
+            "headers": {
+                "Content-Type": "application/json",
+                "Access-Control-Allow-Origin": "*",
+            },
+            "body": json.dumps({"error": f"Internal server error: {str(e)}"})
         }
