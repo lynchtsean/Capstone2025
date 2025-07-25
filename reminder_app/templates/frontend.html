@@ -72,7 +72,10 @@
 
 <div class="module">
   <h2>🔔 Practice Reminder</h2>
-  <button>Enable Reminder</button>
+  <form action="/send-reminder" method="post">
+    <input type="text" name="reminder" placeholder="Enter your reminder..." required />
+    <button type="submit">Enable Reminder</button>
+  </form>
 </div>
 
 <div class="module">
