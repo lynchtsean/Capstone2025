@@ -1,6 +1,40 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect, url_for
+from threading import Timer
+from datetime import datetime, timedelta
 import requests  # Needed to send requests to AWS API
 from s3_helpers import get_subscribers, save_subscribers
+
+def send_reminder(email, message):
+    aws_url = "https://your-aws-endpoint.example.com/send"
+    payload = {"email": email, "message": message}
+    try:
+        requests.post(aws_url, json=payload)
+    except Exception as e:
+        app.logger.error(f"Failed to send reminder: {e}")
+
+def schedule_reminder(email, message, send_time_str):
+    # Parse the user’s requested time (format: "YYYY-MM-DD HH:MM")
+    send_time = datetime.strptime(send_time_str, "%Y-%m-%d %H:%M")
+    delay = (send_time - datetime.now()).total_seconds()
+
+    if delay <= 0:
+        raise ValueError("Send time must be in the future")
+
+    # Start a background thread that will call send_reminder()
+    Timer(delay, send_reminder, args=(email, message)).start()
+
+@app.route("/reminders", methods=["POST"])
+def create_reminder():
+    email = request.form["email"]
+    message = request.form["message"]
+    send_time = request.form["send_time"]  # match your form field name
+
+    try:
+        schedule_reminder(email, message, send_time)
+    except ValueError as err:
+        return render_template("error.html", error=str(err)), 400
+
+    return redirect(url_for("confirmation"))
 
 app = Flask(__name__)
 
@@ -11,16 +45,11 @@ def home():
 
 # 📬 Reminder route that gets triggered when the button is clicked
 @app.route("/send-reminder", methods=["POST"])
-def send_reminder():
+def trigger_reminder():
     api_url = "https://yaikepg1ej.execute-api.us-east-1.amazonaws.com/send-reminder"
     response = requests.post(api_url)
 
-    if response.status_code == 200:
-        message = "Reminder sent successfully!"
-    else:
-        message = f"Failed to send reminder – {response.status_code}"
-
-    # 🔁 Reloads the homepage and optionally shows feedback
+    message = "Reminder sent successfully!" if response.status_code == 200 else f"Failed to send reminder – {response.status_code}"
     return render_template("index.html", message=message)
 
 # 📥 Subscribe route that saves user info to S3
