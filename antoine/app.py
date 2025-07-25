@@ -4,6 +4,8 @@ from datetime import datetime, timedelta
 import requests  # Needed to send requests to AWS API
 from s3_helpers import get_subscribers, save_subscribers
 
+app = Flask(__name__)
+
 def send_reminder(email, message):
     aws_url = "https://your-aws-endpoint.example.com/send"
     payload = {"email": email, "message": message}
@@ -35,8 +37,6 @@ def create_reminder():
         return render_template("error.html", error=str(err)), 400
 
     return redirect(url_for("confirmation"))
-
-app = Flask(__name__)
 
 # 🏠 Homepage route
 @app.route("/")
