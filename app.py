@@ -52,11 +52,23 @@ def home():
 # 📬 Reminder route that gets triggered when the button is clicked
 @app.route("/send-reminder", methods=["POST"])
 def trigger_reminder():
-    api_url = "https://yaikepg1ej.execute-api.us-east-1.amazonaws.com/send-reminder"
-    response = requests.post(api_url)
+    message = request.form.get("reminder")  # Gets message from the form
+    phone = request.form.get("phone")       # Gets phone from the form
 
-    message = "Reminder sent successfully!" if response.status_code == 200 else f"Failed to send reminder – {response.status_code}"
-    return render_template("index.html", message=message)
+    payload = {
+        "phone": phone,
+        "message": message
+    }
+
+    api_url = "https://yaikepg1ej.execute-api.us-east-1.amazonaws.com/send-reminder"
+    response = requests.post(api_url, json=payload)
+
+    feedback = (
+        "Reminder sent successfully!" if response.status_code == 200
+        else f"Failed to send reminder – {response.status_code}"
+    )
+
+    return render_template("index.html", message=feedback)
 
 # 📥 Subscribe route that saves user info to S3
 @app.route("/subscribe", methods=["POST"])

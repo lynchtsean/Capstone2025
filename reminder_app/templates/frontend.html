@@ -70,12 +70,12 @@
   <div class="output" id="chatResponse"></div>
 </div>
 
-<div class="module">
-  <h2>🔔 Practice Reminder</h2>
-  <form action="/send-reminder" method="post">
-    <input type="text" name="reminder" placeholder="Enter your reminder..." required />
-    <button type="submit">Enable Reminder</button>
-  </form>
+<form action="/send-reminder" method="POST">
+  <input type="text" name="reminder" placeholder="Enter your reminder..." required />
+  <input type="text" name="phone" placeholder="Friend's phone number..." required />
+  <button type="submit">Enable Reminder</button>
+</form>
+
 
   <!-- 🎸 Visual flair below the form -->
   <div style="margin-top: 20px;">
