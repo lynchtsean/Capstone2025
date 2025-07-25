@@ -1,8 +1,14 @@
+import sys
+import os
+sys.path.append(os.path.join(os.path.dirname(__file__), 'antoine'))
+
 from flask import Flask, render_template, request, redirect, url_for
 from threading import Timer
 from datetime import datetime, timedelta
 import requests  # Needed to send requests to AWS API
 from s3_helpers import get_subscribers, save_subscribers
+
+
 
 app = Flask(__name__)
 
