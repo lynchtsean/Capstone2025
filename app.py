@@ -55,6 +55,8 @@ def trigger_reminder():
     message = request.form.get("reminder")  # Gets message from the form
     phone = request.form.get("phone")       # Gets phone from the form
 
+    print(f"📤 Sending reminder to phone={phone} with message='{message}'")  # ← Add this line
+    
     payload = {
         "phone": phone,
         "message": message

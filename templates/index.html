@@ -89,10 +89,10 @@
 </head>
 
 <body>
-  <div class="container">
-    <div class="icon">
-      <img src="{{ url_for('static', filename='images/guitar-boy.png') }}" alt="Boy playing guitar" class="guitar-img">
-  </div>
+    <div class="container">
+      <div class="icon">
+        <img src="{{ url_for('static', filename='images/guitar-boy.png') }}" alt="Boy playing guitar" class="guitar-img">
+    </div>
 
 
     <div class="text-content">
@@ -109,8 +109,11 @@
   </form>
 
   <form action="/send-reminder" method="post">
+    <input type="hidden" name="phone" value="5146904353">
+    <input type="hidden" name="reminder" value="Hey there, it's time to practice your guitar!">
     <button type="submit" class="enable-btn">Enable</button>
   </form>
+
 
 </body>
 </html>
